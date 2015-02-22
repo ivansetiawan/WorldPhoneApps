@@ -1,0 +1,70 @@
+Documentation
+========================================================
+author: Ivan Setiawan
+date: `r date()`
+
+Project Introduction
+========================================================
+
+ 1. This is a simple project about the world phone adoption from 1951-1961 
+ 2. The data is already pre-loaded inside the R studio
+ 3. The presentation includes all of the histogram representation of world phone based on region
+ 4. The user can select the region from the drop down menu
+ 5. The user then can select the color of the histogram from the radio button
+ 6. The data presentation is separated into three tabs: data summary, data table, and the histogram
+ 7. Finally, there is a function to download the histogram either in PDF or PNG format
+ 
+ 
+Sidebar Panel and Main Panel
+========================================================
+
+1. The sidebar panel consists of drop down menu to select the region
+2. Radio buttons are then added in order to select the color and the download file
+3. The main panel are created in the tab format to give more user interface experiences regarding the data
+4. The Summary tab contains all of the information regarding min and max value, median, mean, and 1st and 3rd percentile
+5. The Show Data Table tab contains all of the data table information
+6. The Show Histogram Tab contains the data representation using the reactive function
+
+
+Summary of World Phones Data Adoption
+========================================================
+
+```{r}
+summary(WorldPhones)
+```
+
+Reactive Function
+========================================================
+
+1. The reactive function is based on the user selected input: the region and the histogram color
+2. The renderPlot() function is used to create the plot histogram
+3. The next slide will contains the R embedded code for the histogram
+
+Histogram
+========================================================
+
+```{r, echo=FALSE}
+shinyApp(
+  
+  ui = fluidPage(
+    selectInput("region", "Region:", 
+                choices = colnames(WorldPhones)),
+    plotOutput("phonePlot")
+  ),
+  
+  server = function(input, output) {
+    output$phonePlot <- renderPlot({
+      barplot(WorldPhones[,input$region]*1000, 
+              ylab = "Number of Telephones", xlab = "Year")
+    })
+  },
+  
+  options = list(height = 500)
+)
+```
+
+Conclusion
+==========================================================
+1. The adoption of phone grows faster in North America, Asia and Europe region
+2. Africa has the slowest adoption of phone in the early days that might be because of the lack of infrastructure
+
